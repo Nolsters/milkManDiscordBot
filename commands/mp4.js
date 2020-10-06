@@ -28,8 +28,12 @@ module.exports = {
               
         video.pipe(fs.createWriteStream('C:\\Users\\nolan\\Desktop\\milkMan\\videos\\video.mp4'));
         const Discord = require('discord.js');
-        setTimeout(() => message.channel.send("Heres your video:.", { files: ["C:\\Users\\nolan\\Desktop\\milkMan\\videos\\video.mp4"] }), 10000);
-
-
+        console.log('Before dispatching video file');
+        setTimeout(function(){
+            message.delete()
+            message.channel.send(`Heres your video ${message.author}:`, { files: ["C:\\Users\\nolan\\Desktop\\milkMan\\videos\\video.mp4"] });
+            console.log('After Dispatching video file')
+        }, 4000);
     }
+    
 }

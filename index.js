@@ -15,9 +15,16 @@ for(const file of commandFiles){
     client.commands.set(command.name, command);
 }
 
-client.once('ready', () => {
-    console.log('Milk Man is active.');
-});
+client.on("ready", () =>{
+    console.log(`Logged in as ${client.user.tag}!`);
+    client.user.setPresence({
+        status: "online",  // You can show online, idle... Do not disturb is dnd
+        game: {
+            name: "!help",  // The message shown
+            type: "PLAYING" // PLAYING, WATCHING, LISTENING, STREAMING,
+        }
+    });
+ });
 
 client.on('message', message =>{
     if(!message.content.startsWith(prefix) || message.author.bot) return;
@@ -48,5 +55,5 @@ client.on('message', message =>{
 
 
 
-client.login('NzU1NTA4NDU2NDcxMTM0MjI4.X2EUFA.cus2aE4HyLXaQJYfOx92Iju2akw');
+client.login('NzU1NTA4NDU2NDcxMTM0MjI4.X2EUFA.cFhHUHnoutxiGlC4kqB3pkaIflo');
 
