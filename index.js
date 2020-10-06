@@ -48,5 +48,5 @@ client.on('message', message =>{
 
 
 
-client.login('NzU1NTA4NDU2NDcxMTM0MjI4.X2EUFA.cus2aE4HyLXaQJYfOx92Iju2akw');
+client.login('INSERT DISCORD API KEY);
 
