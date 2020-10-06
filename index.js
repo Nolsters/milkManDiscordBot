@@ -59,6 +59,10 @@ client.on('message', message =>{
 
 
 
+<<<<<<< HEAD
+=======
+client.login('Insert Token Here');
+>>>>>>> cc86d9a9f9e4d0f3ecdda1b2d50eb9289aa32ce4
 
 client.on('message',message =>{
 
