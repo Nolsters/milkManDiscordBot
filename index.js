@@ -55,5 +55,5 @@ client.on('message', message =>{
 
 
 
-client.login('NzU1NTA4NDU2NDcxMTM0MjI4.X2EUFA.cFhHUHnoutxiGlC4kqB3pkaIflo');
+client.login('Insert Token Here');
 
