@@ -3,7 +3,7 @@ module.exports = {
     description: "This is a greeting command!",
     execute(message, args){
         var x;
-        x = Math.floor(Math.random() * 10);
+        x = Math.floor(Math.random() * 11);
         if (x == 0){
             message.channel.send('Get the fuck out of my house.');
         } else if (x == 1) {
@@ -17,11 +17,13 @@ module.exports = {
         } else if (x == 5) {
             message.channel.send('Honestly I could give less then 2 shits about you. Get out of my face!');
         } else if (x == 6) {
-            message.channel.send('Is your name Sarge? Cause your acting hella retarded.');
+            message.channel.send('Is your name Sarge? Cause you\'re acting hella retarded.');
         } else if (x == 7) {
             message.channel.send('Get the fuck out of here');
         }else if (x == 8) {
             message.channel.send('Im sleeping you dumbass.');
         } else if (x == 9) {
             message.channel.send('Screw you!');
+        } else if (x == 10) {
+            message.channel.send('Is your name CJ? Cause I think you may be Gay.');
 }}}

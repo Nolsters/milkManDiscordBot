@@ -1,0 +1,2 @@
+<@294091841786085376>: !kick @charleees
+ TypeError: Cannot read property 'roles' of undefined

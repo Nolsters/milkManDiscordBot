@@ -9,11 +9,16 @@
   "author": "Nolsters",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^12.3.1",
+    "@discordjs/opus": "^0.3.3",
+    "discord.js": "^12.4.1",
+    "ffmpeg": "0.0.4",
+    "fluent-ffmpeg": "^2.1.2",
+    "fs": "0.0.1-security",
     "jquery": "^3.5.1",
     "opusscript": "0.0.7",
+    "prompt": "^1.0.0",
     "snoowrap": "^1.21.0",
     "youtube-dl": "^3.0.2",
-    "ytdl-core": "^3.3.0"
+    "ytdl-core": "^3.4.2"
   }
 }

@@ -1,14 +1,36 @@
-const Discord = require('discord.js');
+/*
 
-const client = new Discord.Client();
+milkMan Discord Bot
+
+Tasks:
+- Fix all errors that end the bots instance. (High Priority)
+- Index youtube for link (Medium Priority - More info at bottom)
+- Try implemting wophf comman (Low Priority)
+- Implement website command center (Very-Low Priority)
+
+
+Built By:
+Nolsters
+
+*/
+
+
+
+const Discord = require('discord.js');  // Brings in the Discord.js API markup
+
+const client = new Discord.Client();    // Delcares discord instance. 
 
 const prefix = '!';
 
-const fs = require('fs');
+const fs = require('fs');               // Read and Write files feature. 
 
-var servers = {};
+var servers = {};             
 
 const ytdl = require("ytdl-core");
+
+const prompt = require('prompt');
+
+const queue = new Map();
 
 client.commands = new Discord.Collection();
 
@@ -19,117 +41,205 @@ for(const file of commandFiles){
     client.commands.set(command.name, command);
 }
 
-client.on("ready", () =>{
-    console.log(`Logged in as ${client.user.tag}!`);
-    client.user.setPresence({
-        status: "online",  // You can show online, idle... Do not disturb is dnd
-        game: {
-            name: "!help",  // The message shown
-            type: "PLAYING" // PLAYING, WATCHING, LISTENING, STREAMING,
-        }
-    });
- });
 
-client.on('message', message =>{
-    if(!message.content.startsWith(prefix) || message.author.bot) return;
-
-    const args = message.content.slice(prefix.length).split(/ +/);
-    const command = args.shift().toLowerCase();
-    
-    if(message.content.startsWith("https://www.reddit.com")){
-        message.channel.send('This is a reddi link');
-    }
-    
-    if(command === 'hi'){
-        client.commands.get('hi').execute(message, args);
-    } else if(command == 'gay') {
-        client.commands.get('gay').execute(message, args);
-    } else if(command == 'mute') {
-        client.commands.get('muteUsers').execute(message, args);
-    } else if(command == 'reddit') {
-        client.commands.get('redditHandler').execute(message, args);
-    } else if(command == 'amongon') {
-        client.commands.get('amongon').execute(message, args);
-    } else if(command == 'amongoff') {
-        client.commands.get('amongoff').execute(message, args);
-    } else if(command == 'mp4'){
-        client.commands.get('mp4').execute(message, args);
-    }
+client.on('guildMemberAdd', (guildMember) => {
+  console.log('User Has JOINED')
+  const welcome_channel = client.channels.cache.get('524741020093513753');
+  const command = args.shift().toLowerCase();                                                           // FIX THE FUCK OUT OF THIS
+  welcome_channel.send(`Welcome, <@${member.id}> you have been given 2% milk`);
+  guildMember.roles.set(['450328239563341834', '672879195352727587']).catch(console.error);
 });
 
-
-
-<<<<<<< HEAD
-=======
-client.login('Insert Token Here');
->>>>>>> cc86d9a9f9e4d0f3ecdda1b2d50eb9289aa32ce4
-
-client.on('message',message =>{
-
-    let args = message.content.substring(prefix.length).split(" ");
-    switch(args[0]){
-        case 'play':
-            
-            function play(connection,message){
-                var server = servers[message.guild.id];
-
-                server.dispatcher = connection.play(ytdl(server.queue[0],{filter: 'audioonly'}));
-                server.queue.shift();
-                server.dispatcher.on("end",function(){
-                    if(server.queue[0]){
-                        play(connection,message);
-                    } else {
-                        connection.disconnect();
-                    }
-                });
-
+client.on('message', message =>{
+    try{
+      if(message.content.startsWith(prefix)){
+        const args = message.content.slice(prefix.length).split(/ +/);
+        const command = args.shift().toLowerCase();
+        if(command === 'hi'){
+            client.commands.get('hi').execute(message, args);
+        } else if(command == 'gay') {
+            client.commands.get('gay').execute(message, args);
+        } else if(command == 'mute') {
+            client.commands.get('muteUsers').execute(message, args);
+        } else if(command == 'reddit') {
+            client.commands.get('redditHandler').execute(message, args);
+        } else if(command == 'amongon') {
+            client.commands.get('amongon').execute(message, args);
+        } else if(command == 'amongoff') {
+            client.commands.get('amongoff').execute(message, args);
+        } else if(command == 'mp4'){
+            client.commands.get('mp4').execute(message, args);
+        } else if(command == 'poll'){
+            client.commands.get('poll').execute(message, args);
+        } else if(command == 'reminder'){
+            try {
+                var uniqueMessage = message.content.match(/".+?"/g).map(str => str.replace(/"/g, ''));
+                client.commands.get('reminder').execute(message, args, uniqueMessage);
+            } catch (error) {
+                message.channel.send('Your formatting was incorect Try this:\n> !reminder in `#``seconds/minutes/days/hours` "`message` (optional)"\n\
+                > !reminder on `YYYY`/`MM`/`DD` `##`:`##` "`message` (optional)"');
             }
-
-            if(!args[1]){
-                message.channel.send("you need to provide a link");
-                return;
+        } else if(command == 'kick') {
+            try {
+              var uniqueMessage = message.content.match(/".+?"/g).map(str => str.replace(/"/g, ''));
+              client.commands.get('kick').execute(message, args, uniqueMessage);
+            } catch (error) {
+              var uniqueMessage = 'x'
+              client.commands.get('kick').execute(message, args, uniqueMessage);
             }
-            if(!message.member.voice.channel){
-                message.channel.send("you must be in a channel to play the bot !");
-                return;
-            }
-
-            if(!servers[message.guild.id]) servers[message.guild.id]={
-                queue :[]
-            }
-            var server = servers[message.guild.id];
-
-            server.queue.push(args[1]);
-
-            if(!message.guild.voiceConnection) 
-            message.member.voice.channel.join().then(function(connection){
-                play(connection,message);
-            })
-
-            break;
-        case 'skip':
-                var server = servers[message.guild.id];
-                if(server.dispatcher) server.dispatcher.end();
-                message.channel.send("song skipped")
-        break;
-
-        case 'stop':
-                console.log('Testing the case');
-                var server = servers[message.guild.id];
-                if(message.guild.voiceConnection){
-                    for(var i=server.queue.length -2;i>=0;i--){
-                        server.queue.splice(i,1);
-                    }
-                    console.log('passed if loop')
-                    server.dispatcher.end();
-                    message.channel.send("Ending the queue leaving the voice channel")
-                    console.log('stopped the queue')
-                }
-                if(message.guild.connection) message.member.voice.channel.leave();
-        
-        break;
-
+        } else if(command == 'emoji') {
+            client.commands.get('emoji').execute(message, args, uniqueMessage);
+        } else if(command == 'addmedia') {
+            client.commands.get('addmedia').execute(message, args);
+        } else if(command == 'addcontact') {
+            client.commands.get('addcontact').execute(message, args);
+        }
+      }
+    } catch (error) {
+      var data = `${message.author}: ${message}\n ${error}`
+      fs.writeFile('./logs/error.txt', data, (err) => {
+          if (err) throw err;
+      });
     }
-})
+  });
 
-client.login('NzU1NTA4NDU2NDcxMTM0MjI4.X2EUFA.aG4HYdAf0avRr_zkIi4kUORsM44');
+
+/*
+
+AUDIO BOT
+
+TO DO'S:
+
+- Add youtube search function.
+- Fix leaving and joining issue (add try statements)
+
+*/
+
+client.once("ready", () =>{
+  //client.channels.cache.get(`524741020093513753`).send('Update Recieved');
+    prompt.get(['Message'], function (err, result) {
+      if (err) { return onErr(err); }
+      console.log('Command-line input received:');
+      console.log(result.Message);
+      result = result.Message;
+      client.channels.cache.get(`524741020093513753`).send(result);
+    });
+    function onErr(err) {
+      console.log(err);
+      return 1;
+    }
+    
+});
+
+client.on("message", async message => {
+    if (message.author.bot) return;
+    if (!message.content.startsWith(prefix)) return;
+  
+    const serverQueue = queue.get(message.guild.id);
+  
+    if (message.content.startsWith(`${prefix}play`)) {
+      execute(message, serverQueue);
+      return;
+    } else if (message.content.startsWith(`${prefix}skip`)) {
+      skip(message, serverQueue);
+      return;
+    } else if (message.content.startsWith(`${prefix}stop`)) {
+      stop(message, serverQueue);
+      return;
+    } else {
+      return;
+    }
+  });
+  
+  async function execute(message, serverQueue) {
+    const args = message.content.split(" ");
+  
+    const voiceChannel = message.member.voice.channel;
+    if (!voiceChannel)
+      return message.channel.send(
+        "You need to be in a voice channel to play music!"
+      );
+    const permissions = voiceChannel.permissionsFor(message.client.user);
+    if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) {
+      return message.channel.send(
+        "I need the permissions to join and speak in your voice channel!"
+      );
+    }
+  
+    const songInfo = await ytdl.getInfo(args[1]);
+    const song = {
+      title: songInfo.title,
+      url: songInfo.video_url
+    };
+  
+    if (!serverQueue) {
+      const queueContruct = {
+        textChannel: message.channel,
+        voiceChannel: voiceChannel,
+        connection: null,
+        songs: [],
+        volume: 5,
+        playing: true
+      };
+  
+      queue.set(message.guild.id, queueContruct);
+  
+      queueContruct.songs.push(song);
+  
+      try {
+        var connection = await voiceChannel.join();
+        queueContruct.connection = connection;
+        play(message.guild, queueContruct.songs[0]);
+      } catch (err) {
+        console.log(err);
+        queue.delete(message.guild.id);
+        return message.channel.send(err);
+      }
+    } else {
+      serverQueue.songs.push(song);
+      return message.channel.send(`${song.title} has been added to the queue!`);
+    }
+  }
+
+  function skip(message, serverQueue) {
+    if (!message.member.voice.channel)
+      return message.channel.send(
+        "You have to be in a voice channel to stop the music!"
+      );
+    if (!serverQueue)
+      return message.channel.send("There is no song that I could skip!");
+    serverQueue.connection.dispatcher.end();
+  }
+  
+  function stop(message, serverQueue) {
+    if (!message.member.voice.channel)
+      return message.channel.send(
+        "You have to be in a voice channel to stop the music!"
+      );
+    serverQueue.songs = [];
+    serverQueue.connection.dispatcher.end();
+  }
+  
+  function play(guild, song) {
+    const serverQueue = queue.get(guild.id);
+    if (!song) {
+      serverQueue.voiceChannel.leave();
+      queue.delete(guild.id);
+      return;
+    }
+  
+    const dispatcher = serverQueue.connection
+      .play(ytdl(song.url))
+      .on("finish", () => {
+        serverQueue.songs.shift();
+        play(guild, serverQueue.songs[0]);
+      })
+      .on("error", error => console.error(error));
+    dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+    serverQueue.textChannel.send(`Start playing: **${song.title}**`);
+  }
+
+  
+  
+
+client.login('NzU1NTA4NDU2NDcxMTM0MjI4.X2EUFA.dnnrjKbx73ou-vO-pLlqzqCDG14');

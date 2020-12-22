@@ -23,17 +23,19 @@ module.exports = {
             console.log('filename: ' + info._filename)
             console.log('size: ' + info.size)
         });
-        filename = filename + 1;
-        var finalFilename = filename + '';
-              
-        video.pipe(fs.createWriteStream('C:\\Users\\nolan\\Desktop\\milkMan\\videos\\video.mp4'));
-        const Discord = require('discord.js');
-        console.log('Before dispatching video file');
-        setTimeout(function(){
+        function writeFile(){
+            return new Promise(resolve =>{
+                resolve(video.pipe(fs.createWriteStream('C:\\Users\\nolan\\Desktop\\milkMan\\videos\\video.mp4')));
+            })
+        }
+        async function call(){
+            const result = await writeFile();
             message.delete()
             message.channel.send(`Heres your video ${message.author}:`, { files: ["C:\\Users\\nolan\\Desktop\\milkMan\\videos\\video.mp4"] });
             console.log('After Dispatching video file')
-        }, 4000);
+        }
+        console.log('Before dispatching video file');
+        call();
     }
     
 }
