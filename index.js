@@ -242,4 +242,4 @@ client.on("message", async message => {
   
   
 
-client.login('NzU1NTA4NDU2NDcxMTM0MjI4.X2EUFA.dnnrjKbx73ou-vO-pLlqzqCDG14');
+client.login(process.env.DISCORD_TOKEN);
