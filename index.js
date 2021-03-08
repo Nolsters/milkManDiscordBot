@@ -69,8 +69,8 @@ client.on('message', message =>{
             client.commands.get('amongoff').execute(message, args);
         } else if(command == 'mp4'){
             client.commands.get('mp4').execute(message, args);
-        } else if(command == 'poll'){
-            client.commands.get('poll').execute(message, args);
+        } else if(command == 'vote'){
+            client.commands.get('vote').execute(message, args);
         } else if(command == 'reminder'){
             try {
                 var uniqueMessage = message.content.match(/".+?"/g).map(str => str.replace(/"/g, ''));
